@@ -1,13 +1,7 @@
 import Link from "next/link";
 import PokemonDetail from "@/app/components/PokemonDetail";
 
-type PokemonDetailPageProps = {
-  params: {
-    id: string;
-  };
-};
-
-export default async function PokemonDetailPage({ params }: PokemonDetailPageProps) {
+export default async function PokemonDetailPage({ params }: { params: { id: string } }) {
   return (
     // Usamos un Fragment (<>) para no añadir divs innecesarios
     <>
