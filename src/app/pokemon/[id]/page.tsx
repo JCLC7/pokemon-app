@@ -1,11 +1,25 @@
 import Link from "next/link";
 import PokemonDetail from "@/app/components/PokemonDetail";
+import type { Pokemon } from "@/app/components/PokemonDetail"; // Importamos el tipo
 
-export default async function PokemonDetailPage({ params }: { params: { id: string } }) {
+// Traemos la función para obtener los datos a este archivo
+async function getPokemon(id: string): Promise<Pokemon> {
+  const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+  if (!res.ok) {
+    throw new Error('Failed to fetch Pokémon data');
+  }
+  return res.json();
+}
+
+
+export default async function PokemonDetailPage({ params }: { params: { id:string } }) {
+
+  const awaitedParams = await params;
+  // 1. La página AHORA se encarga de buscar los datos del Pokémon
+  const pokemon = await getPokemon(awaitedParams.id);
+
   return (
-    // Usamos un Fragment (<>) para no añadir divs innecesarios
     <>
-      {/* Posicionamos el botón para que flote sobre el componente de detalle */}
       <Link 
         href="/" 
         className="absolute top-6 left-6 z-30 flex items-center gap-2 text-white font-semibold bg-black/30 hover:bg-black/50 transition-all px-4 py-2 rounded-full"
@@ -16,8 +30,8 @@ export default async function PokemonDetailPage({ params }: { params: { id: stri
         Volver a la lista
       </Link>
       
-      {/* El componente de detalle se encarga de renderizar todo lo demás, incluido el fondo */}
-      <PokemonDetail id={params.id} />
+      {/* 2. Le pasamos el objeto "pokemon" completo al componente, en lugar de solo el id */}
+      <PokemonDetail pokemon={pokemon} />
     </>
   );
 }

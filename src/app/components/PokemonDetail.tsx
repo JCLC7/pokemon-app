@@ -1,7 +1,7 @@
 import Image from "next/image";
 
-// Interfaz para definir la estructura de los datos del Pokémon
-interface Pokemon {
+// Exportamos la interfaz para poder usarla en otros archivos (como en page.tsx)
+export interface Pokemon {
   id: string;
   name: string;
   sprites: {
@@ -15,10 +15,9 @@ interface Pokemon {
   height: number;
   weight: number;
   stats: { base_stat: number; stat: { name: string } }[];
-  abilities: { ability: { name: string } }[];
 }
 
-// Objeto mejorado para manejar los colores de fondo (gradientes) y los colores de las insignias
+// Objeto de colores (sin cambios)
 const typeColors = {
   normal: { bg: 'bg-gray-400', gradient: 'from-gray-400 to-gray-500' },
   fire: { bg: 'bg-red-500', gradient: 'from-red-500 to-orange-500' },
@@ -40,29 +39,17 @@ const typeColors = {
   fairy: { bg: 'bg-pink-300', gradient: 'from-pink-300 to-fuchsia-400' },
 };
 
-// Función asíncrona para obtener los datos de un Pokémon desde la PokéAPI
-async function getPokemon(id: string): Promise<Pokemon> {
-  const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
-  if (!res.ok) {
-    throw new Error('Failed to fetch Pokémon data');
-  }
-  return res.json();
-}
 
-// Componente principal que renderiza los detalles del Pokémon
-export default async function PokemonDetail({ id }: { id: string }) {
-  const pokemon = await getPokemon(id);
+// 1. El componente ya NO es "async". Ahora recibe el objeto "pokemon" completo.
+export default function PokemonDetail({ pokemon }: { pokemon: Pokemon }) {
+  // 2. Ya NO necesita buscar datos, porque los recibe directamente.
 
   const primaryType = pokemon.types[0].type.name as keyof typeof typeColors;
   const typeStyle = typeColors[primaryType] || typeColors.normal;
 
   return (
-    // CAMBIO 1: Se ajustó el padding superior para dar más espacio a la imagen
     <div className={`relative min-h-screen w-full flex items-center justify-center pt-28 p-4 bg-gradient-to-br ${typeStyle.gradient}`}>
-      
       <div className="relative w-full max-w-lg">
-        
-        {/* CAMBIO 2: Se ajustó la posición de la imagen para que no se corte arriba */}
         <div className="absolute -top-16 sm:-top-24 left-1/2 -translate-x-1/2 z-20">
           <Image 
             className="h-48 w-48 sm:h-64 sm:w-64 object-contain drop-shadow-2xl"
@@ -73,17 +60,12 @@ export default async function PokemonDetail({ id }: { id: string }) {
             priority
           />
         </div>
-
-        {/* Tarjeta de contenido con efecto de vidrio */}
-        <div className="relative bg-black/40 backdrop-blur-lg rounded-2xl shadow-xl pt-28 sm:pt-36 pb-8 px-6 text-white">
-
-          {/* Sección de Nombre y Número */}
+        <div className="relative bg-black/40 backdrop-blur-lg rounded-2xl shadow-xl pt-28 sm-pt-36 pb-8 px-6 text-white">
+          {/* ...El resto del código JSX para mostrar los datos sigue exactamente igual... */}
           <div className="text-center">
             <p className="text-xl font-semibold text-white/70">N.º {String(pokemon.id).padStart(4, '0')}</p>
             <h1 className="text-4xl sm:text-5xl font-extrabold capitalize tracking-wide">{pokemon.name}</h1>
           </div>
-          
-          {/* Sección de Tipos */}
           <div className="mt-4 flex justify-center gap-2">
             {pokemon.types.map(({ type }) => (
               <span key={type.name} className={`text-white text-sm font-semibold px-4 py-1 rounded-full shadow-md ${typeColors[type.name as keyof typeof typeColors]?.bg || 'bg-gray-400'}`}>
@@ -91,11 +73,7 @@ export default async function PokemonDetail({ id }: { id: string }) {
               </span>
             ))}
           </div>
-
-          {/* Divisor visual */}
           <div className="my-6 border-b-2 border-white/20"></div>
-
-          {/* Sección de Altura y Peso */}
           <div className="grid grid-cols-2 gap-4 text-center">
             <div>
               <h2 className="text-lg font-semibold text-white/70">Height</h2>
@@ -106,8 +84,6 @@ export default async function PokemonDetail({ id }: { id: string }) {
               <p className="text-2xl font-bold mt-1">{pokemon.weight / 10} kg</p>
             </div>
           </div>
-
-          {/* Sección de Estadísticas Base */}
           <div className="mt-6">
             <h2 className="text-2xl font-bold text-center mb-4">Base Stats</h2>
             <div className="space-y-3">
