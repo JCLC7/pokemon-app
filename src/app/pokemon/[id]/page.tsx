@@ -12,7 +12,7 @@ async function getPokemon(id: string): Promise<Pokemon> {
 }
 
 
-export default async function PokemonDetailPage({ params }: { params: { id:string } }) {
+export default async function PokemonDetailPage({ params }: { params: any }) {
 
   const awaitedParams = await params;
   // 1. La página AHORA se encarga de buscar los datos del Pokémon
