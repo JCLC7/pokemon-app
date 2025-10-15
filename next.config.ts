@@ -16,8 +16,7 @@ export default withPWA({
   register: true,
   workboxOptions: {
     skipWaiting: true,
-  },
-  runtimeCaching: [
+    runtimeCaching: [
     {
       urlPattern: /^https:\/\/pokeapi\.co\/api\/v2\/pokemon\/?$/i,
       handler: "CacheFirst",
@@ -52,4 +51,5 @@ export default withPWA({
       },
     },
   ],
+  },
 })(nextConfig);
