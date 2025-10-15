@@ -14,6 +14,7 @@ const nextConfig: NextConfig = {
 
 export default withPWA({
   register: true,
+  swcMinify: false,
   workboxOptions: {
     skipWaiting: true,
     runtimeCaching: [
