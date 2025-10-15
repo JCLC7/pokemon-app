@@ -12,6 +12,7 @@ async function getPokemon(id: string): Promise<Pokemon> {
 }
 
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function PokemonDetailPage({ params }: { params: any }) {
 
   const awaitedParams = await params;
