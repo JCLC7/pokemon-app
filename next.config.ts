@@ -18,6 +18,17 @@ export default withPWA({
     skipWaiting: true,
     runtimeCaching: [
     {
+      urlPattern: /\/pokemon\/\d+/,
+      handler: "StaleWhileRevalidate",
+      options: {
+        cacheName: "pokemon-detail-pages",
+        expiration: {
+          maxEntries: 200,
+          maxAgeSeconds: 60 * 60 * 24 * 7, // 1 week
+        },
+      },
+    },
+    {
       urlPattern: /^https:\/\/pokeapi\.co\/api\/v2\/pokemon\/?$/i,
       handler: "CacheFirst",
       options: {
