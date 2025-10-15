@@ -15,8 +15,10 @@ const nextConfig: NextConfig = {
 export default withPWA({
   dest: "public",
   register: true,
-  skipWaiting: true,
   swcMinify: false,
+  workboxOptions: {
+    skipWaiting: true,
+  },
   runtimeCaching: [
     {
       urlPattern: /^https:\/\/raw\.githubusercontent\.com\/.*/i,
