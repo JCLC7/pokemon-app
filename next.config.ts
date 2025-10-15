@@ -10,11 +10,11 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  transpilePackages: ['@ducanh2912/next-pwa'],
 };
 
 export default withPWA({
   register: true,
-  swcMinify: false,
   workboxOptions: {
     skipWaiting: true,
     runtimeCaching: [
