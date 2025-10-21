@@ -12,6 +12,13 @@ export interface Pokemon {
   height?: number;
   weight?: number;
   stats?: { base_stat: number; stat: { name: string } }[];
+  sprites?: {
+    other?: {
+      'official-artwork'?: {
+        front_default?: string;
+      };
+    };
+  };
 }
 
 interface PokedexState {
@@ -25,6 +32,7 @@ interface PokedexState {
   setScrollPosition: (position: number) => void;
   getPokemonById: (id: string) => Pokemon | undefined;
   ensurePokemonDetails: (pokemon: Pokemon) => Promise<void>;
+  updatePokemonDetails: (pokemon: Pokemon) => void;
 }
 
 // 2. CREACIÓN DEL CONTEXTO
@@ -113,6 +121,7 @@ export function PokedexProvider({ children }: { children: ReactNode }) {
     setScrollPosition,
     getPokemonById,
     ensurePokemonDetails,
+    updatePokemonDetails,
   };
 
   return <PokedexContext.Provider value={value}>{children}</PokedexContext.Provider>;

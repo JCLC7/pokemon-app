@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import PokemonDetailComponent, { Pokemon } from '@/app/components/PokemonDetail';
+import PokemonDetailComponent from '@/app/components/PokemonDetail';
+import { Pokemon } from '@/app/context/PokedexContext';
 import { usePokedex } from '@/app/context/PokedexContext';
 
 // Objeto de colores (duplicado aquí para usarlo en el estado de carga)
@@ -64,10 +65,16 @@ export default function PokemonDetailPage() {
         try {
           const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
           if (!res.ok) throw new Error('Failed to fetch Pokémon');
-          const details: Pokemon = await res.json();
-          const fullDetails = { ...partialPokemon, ...details };
-          setPokemon(fullDetails);
-          updatePokemonDetails(fullDetails);
+          const details = await res.json();
+          const fullDetails = {
+            ...partialPokemon,
+            ...details,
+            id: id.toString(),
+            url: partialPokemon?.url || `https://pokeapi.co/api/v2/pokemon/${id}/`,
+            image: partialPokemon?.image || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
+          };
+          setPokemon(fullDetails as Pokemon);
+          updatePokemonDetails(fullDetails as Pokemon);
         } catch (error) {
           console.error(error);
         } finally {

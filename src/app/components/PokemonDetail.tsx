@@ -1,21 +1,5 @@
-import Image from "next/image";
-
-// La interfaz ahora es más flexible, con propiedades opcionales
-export interface Pokemon {
-  id: string;
-  name: string;
-  sprites?: {
-    other?: {
-      'official-artwork'?: {
-        front_default?: string;
-      };
-    };
-  };
-  types?: { type: { name: string } }[];
-  height?: number;
-  weight?: number;
-  stats?: { base_stat: number; stat: { name: string } }[];
-}
+import Image from 'next/image';
+import { Pokemon } from '@/app/context/PokedexContext';
 
 const typeColors = {
   normal: { bg: 'bg-gray-400', gradient: 'from-gray-400 to-gray-500' },
