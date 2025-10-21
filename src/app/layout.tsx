@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   manifest: "/manifest.json",
 };
 
+import { PokedexProvider } from './context/PokedexContext';
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -15,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className="bg-gray-100">
-        {children}
+        <PokedexProvider>{children}</PokedexProvider>
       </body>
     </html>
   );
