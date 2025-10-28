@@ -15,5 +15,5 @@ const nextConfig: NextConfig = {
 
 export default withPWA({
   dest: "public",
-  workerDir: "worker",
+  customWorkerSrc: "worker",
 })(nextConfig);
