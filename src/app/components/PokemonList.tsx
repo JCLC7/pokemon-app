@@ -42,6 +42,22 @@ export default function PokemonList() {
 
   const pokemonsPerPage = 20;
 
+  const sendNotification = async (pokemon) => {
+    if ('serviceWorker' in navigator) {
+      const registration = await navigator.serviceWorker.ready;
+      if (registration.active) {
+        registration.active.postMessage({
+          type: 'SHOW_NOTIFICATION',
+          payload: {
+            title: `Has visto a ${pokemon.name}`,
+            body: `Este es un Pokémon de tipo ${pokemon.types.map(t => t.type.name).join(', ')}.`,
+            icon: pokemon.image,
+          },
+        });
+      }
+    }
+  };
+
   // Lógica de filtrado y paginación
   const filteredPokemons = allPokemons.filter((pokemon) =>
     pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -144,7 +160,7 @@ export default function PokemonList() {
             const typeStyle = (primaryType && typeColors[primaryType]) || typeColors.normal;
 
             return (
-              <Link href={`/pokemon/${pokemon.id}`} key={pokemon.id} scroll={false}>
+              <Link href={`/pokemon/${pokemon.id}`} key={pokemon.id} scroll={false} onClick={() => sendNotification(pokemon)}>
                 <div className={`rounded-xl shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer overflow-hidden bg-gradient-to-br ${typeStyle.gradient}`}>
                   <div className="p-5 flex justify-center bg-black/10">
                     <Image
