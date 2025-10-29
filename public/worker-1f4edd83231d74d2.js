@@ -1,0 +1,1 @@
+self.addEventListener("message",a=>{if(a.data&&"SHOW_NOTIFICATION"===a.data.type){let{title:t,body:e,icon:i}=a.data.payload;self.registration.showNotification(t,{body:e,icon:i})}});

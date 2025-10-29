@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePokedex } from '../context/PokedexContext';
+import { usePokedex, Pokemon } from '../context/PokedexContext';
 
 // Objeto para los colores y gradientes de cada tipo de Pokémon
 const typeColors = {
@@ -42,7 +42,7 @@ export default function PokemonList() {
 
   const pokemonsPerPage = 20;
 
-  const sendNotification = async (pokemon) => {
+  const sendNotification = async (pokemon: Pokemon) => {
     if ('serviceWorker' in navigator) {
       const registration = await navigator.serviceWorker.ready;
       if (registration.active) {
@@ -50,7 +50,7 @@ export default function PokemonList() {
           type: 'SHOW_NOTIFICATION',
           payload: {
             title: `Has visto a ${pokemon.name}`,
-            body: `Este es un Pokémon de tipo ${pokemon.types.map(t => t.type.name).join(', ')}.`,
+            body: `Este es un Pokémon de tipo ${pokemon.types?.map(t => t.type.name).join(', ') || 'desconocido'}.`,
             icon: pokemon.image,
           },
         });
